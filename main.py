@@ -2,7 +2,7 @@ from flask import Flask, request, make_response, redirect, render_template
 
 app = Flask(__name__)
 
-
+items = ["Item 1", "Item 2", "Item 3", "Item 4"]
 @app.route("/index")
 def index():
     user_ip_unformation = request.remote_addr
@@ -13,7 +13,12 @@ def index():
 @app.route("/show-information-address")
 def show_information():
     user_ip = request.cookies.get("user_ip_unformation")
-    return render_template("ip_information.html", user_ip = user_ip)
+    context = {
+
+        "user_ip": user_ip,
+        "Items": items
+    }
+    return render_template("ip_information.html", **context)
 
 
 
