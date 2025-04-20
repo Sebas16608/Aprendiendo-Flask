@@ -16,7 +16,7 @@ def show_information():
     context = {
 
         "user_ip": user_ip,
-        "Items": items
+        "items": items
     }
     return render_template("ip_information.html", **context)
 
