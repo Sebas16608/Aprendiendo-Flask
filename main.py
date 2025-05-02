@@ -2,19 +2,18 @@ from flask import Flask, request, make_response, redirect, render_template
 
 app = Flask(__name__)
 
-items = ["Item 1", "Item 2", "Item 3", "Item 4"]
+items = ["Arroz", "Huevos", "Café", "Leche"]
 @app.route("/index")
 def index():
-    user_ip_unformation = request.remote_addr
+    user_ip_information = request.remote_addr
     response = make_response(  redirect("/show-information-address"))
-    response.set_cookie("user_ip_unformation", user_ip_unformation)
+    response.set_cookie("user_ip_information", user_ip_information)
     return response
 
 @app.route("/show-information-address")
 def show_information():
-    user_ip = request.cookies.get("user_ip_unformation")
+    user_ip = request.cookies.get("user_ip_information")
     context = {
-
         "user_ip": user_ip,
         "items": items
     }
