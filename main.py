@@ -3,6 +3,12 @@ from flask import Flask, request, make_response, redirect, render_template
 app = Flask(__name__)
 
 items = ["Arroz", "Huevos", "Café", "Leche"]
+
+@app.errorhandler(404)
+def not_found_endpoint(error):
+    return render_template('404.html', error=error)
+
+
 @app.route("/index")
 def index():
     user_ip_information = request.remote_addr
