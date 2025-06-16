@@ -2,6 +2,7 @@ from flask import Flask, request, make_response, redirect, render_template, sess
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 
@@ -13,9 +14,9 @@ items = ["Arroz", "Huevos", "Café", "Leche"]
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Nombre del Usuario")
-    password = PasswordField("Contraseña")
-    submit = SubmitField("Enviar datos")
+    username = StringField("Nombre del Usuario", validators=[DataRequired()])
+    password = PasswordField("Contraseña", validators=[DataRequired()])
+    submit = SubmitField("Enviar datos", validators=[DataRequired()])
 
 
 
@@ -29,17 +30,24 @@ def index():
     user_ip_information = request.remote_addr
     response = make_response(  redirect("/show-information-address"))
     session["user_ip_information"] = user_ip_information
+
     return response
 
 @app.route("/show-information-address", methods = ["GET", "POST"])
 def show_information():
     user_ip = session.get("user_ip_information")
+    username = session.get("username")
     login_form = LoginForm()
     context = {
         "user_ip": user_ip,
         "items": items,
-        "login_form": login_form
+        "login_form": login_form,
+        "username": username
     }
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        session["username"] = username
+        return make_response(redirect("/index"))
     return render_template("ip_information.html", **context)
 
 
