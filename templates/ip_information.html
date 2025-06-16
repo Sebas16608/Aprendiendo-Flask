@@ -2,6 +2,8 @@
 
 {%import "macros.html" as macros %}
 
+{%import 'bootstrap/wtf.html' as wtf%}
+
 {%block title %}
     {{ super() }}
     Welcome to Flask Project
@@ -14,6 +16,10 @@
         <h2><a href="{{ url_for('index') }}">inicio</a></h2>
 
     {% endif %}
+    <div class="container">
+        {{wtf.quick_form(login_form)}}
+
+    </div>
     <ul>
     {% for item in items %}
         {{macros.render_items(item)}}
