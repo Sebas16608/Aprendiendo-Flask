@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+import unittest
 
 app = Flask(__name__)
 
@@ -16,9 +17,12 @@ items = ["Arroz", "Huevos", "Café", "Leche"]
 class LoginForm(FlaskForm):
     username = StringField("Nombre del Usuario", validators=[DataRequired()])
     password = PasswordField("Contraseña", validators=[DataRequired()])
-    submit = SubmitField("Enviar datos", validators=[DataRequired()])
+    submit = SubmitField("Enviar datos")
 
-
+@app.cli.command()
+def test():
+    tests = unittest.TestLoader().discover("tests")
+    unittest.TextTestRunner().run(tests)
 
 @app.errorhandler(404)
 def not_found_endpoint(error):
@@ -52,5 +56,5 @@ def show_information():
     return render_template("ip_information.html", **context)
 
 
-
-app.run(host="0.0.0.0", port=3000, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3000, debug=True)
